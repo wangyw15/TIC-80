@@ -1,6 +1,6 @@
 name: Build
 
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
 
 # as recommended by: https://github.com/actions/checkout/issues/1590
 env:
@@ -45,6 +45,14 @@ jobs:
           cmake -G "Visual Studio 16 2019" -A Win32 -T v141_xp -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_PRO=On -DBUILD_WITH_ALL=ON ..
           cmake --build . --config MinSizeRel --parallel
 
+      - name: Deploy Pro
+        uses: actions/upload-artifact@v4
+        with:
+          name: "tic80-pro-winxp"
+          path: |
+            build/bin/tic80.exe
+            build/bin/*.dll
+
   # === Windows ===
   windows:
     runs-on: windows-2019
@@ -81,8 +89,17 @@ jobs:
           cmake -G "Visual Studio 16 2019" -DBUILD_SDLGPU=On -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_PRO=On -DBUILD_WITH_ALL=ON ..
           cmake --build . --config MinSizeRel --parallel
 
+      - name: Deploy Pro
+        uses: actions/upload-artifact@v4
+        with:
+          name: "tic80-pro-windows"
+          path: |
+            build/bin/tic80.exe
+            build/bin/*.dll
+
   # === Windows MinGW-64 ===
   windows-mingw:
+    if: false
     runs-on: windows-latest
     defaults:
       run:
@@ -154,8 +171,17 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SDLGPU=On -DBUILD_PRO=On -DBUILD_WITH_ALL=ON ..
           cmake --build . --config MinSizeRel --parallel
 
+      - name: Deploy Pro
+        uses: actions/upload-artifact@v4
+        with:
+          name: "tic80-pro-linux"
+          path: |
+            build/bin/tic80
+            build/bin/*.so
+
   # === Raspberry PI ===
   rpi:
+    if: false
     runs-on: ubuntu-latest
     container: nesbox/rpi-tic80:latest
 
@@ -192,6 +218,7 @@ jobs:
 
   # === Raspberry PI 1-4 Bare Metal ===
   rpi-baremetal:
+    if: false
     runs-on: ubuntu-latest
     container: nesbox/baremetalpi-tic80:latest
 
@@ -252,6 +279,7 @@ jobs:
 
   # === Raspberry PI 4 Bare Metal ===
   rpi4-baremetal:
+    if: false
     runs-on: ubuntu-latest
     container: nesbox/baremetalpi-tic80:latest
 
@@ -315,6 +343,7 @@ jobs:
 
   # === Nintendo 3DS build ===
   nintendo-3ds:
+    if: false
     runs-on: ubuntu-latest
     container: nesbox/devkitpro-tic80:latest
 
@@ -343,6 +372,7 @@ jobs:
 
   # === MacOS 12 ===
   macos:
+    if: false
     runs-on: macos-12
 
     steps:
@@ -376,6 +406,7 @@ jobs:
 
   # === MacOS 14 / arm64 ===
   macos-arm64:
+    if: false
     runs-on: macos-14
 
     steps:
@@ -409,6 +440,7 @@ jobs:
 
   # === Android ===
   android:
+    if: false
     runs-on: ubuntu-latest
 
     steps:
@@ -449,6 +481,7 @@ jobs:
 
   # === HTML ===
   html:
+    if: false
     runs-on: ubuntu-latest
 
     steps:
